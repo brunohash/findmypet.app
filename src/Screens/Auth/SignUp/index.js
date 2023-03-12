@@ -24,27 +24,35 @@ export function SignUp() {
   function register() {
     setLoading(true);
     const userData = { name, birthday, email, password };
+
     if (!emailMatched) {
       setLoading(false);
       alert('Os e-mails não coincidem!');
       return;
     }
-    fetch('https://myapi.com/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(userData)
-    })
-      .then(response => response.json())
-      .then(data => {
-        setLoading(false);
-        console.log('Success:', data);
-        alert('Cadastro realizado com sucesso!');
+
+    if (!name || !birthday || !email || !password) {
+      setLoading(false);
+      alert('Preencha todos os campos!');
+      return;
+    } else {
+      fetch('https://myapi.com/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(userData)
       })
-      .catch(error => {
-        setLoading(false);
-        console.error('Error:', error);
-        alert('Erro ao realizar cadastro, tente novamente.');
-      });
+        .then(response => response.json())
+        .then(data => {
+          setLoading(false);
+          console.log('Success:', data);
+          alert('Cadastro realizado com sucesso!');
+        })
+        .catch(error => {
+          setLoading(false);
+          console.error('Error:', error);
+          alert('Erro ao realizar cadastro, tente novamente.');
+        });
+    }
   }
 
   function compareEmails() {
@@ -80,11 +88,10 @@ export function SignUp() {
           <Input placeholder="Crie uma senha" value={password} onChangeText={text => setPassword(text)} secureTextEntry />
         </InputArea>
 
-        <BtnCustomRegister onPress={register} disabled={!emailMatched}>
-          <BtnText>{emailMatched ? 'Criar uma conta' : 'Preencha os campos corretamente'}</BtnText>
+        <BtnCustomRegister onPress={register}>
+          <BtnText>Criar uma conta</BtnText>
         </BtnCustomRegister>
 
-        {/* exibe o spinner enquanto a requisição está sendo enviada */}
         <Spinner visible={loading} />
 
         {email && confirmEmail && emailMatched === false && (

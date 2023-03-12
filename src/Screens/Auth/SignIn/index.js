@@ -28,7 +28,7 @@ export function SignIn() {
     }
 
     async function handleSignIn() {
-        setLoading(true);
+       setLoading(true);
         try {
             if (email != "" || password != "") {
                 const response = await fetch("https://localhost:7209/v1/authenticate", {
