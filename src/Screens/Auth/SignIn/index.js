@@ -2,9 +2,10 @@ import {
     Body,
     Input,
     View,
+    BtnText,
     Brand,
     SmallText,
-    BtnCustomRegister,
+    BtnZeroBg,
     InputArea,
     BtnCustomLogin,
     ContainerAlert,
@@ -54,16 +55,20 @@ import {
           </InputArea>
   
           <InputArea>
-            <BtnCustomLogin title="Fazer Login" onPress={handleSignIn} />
+            <BtnCustomLogin title="Fazer Login" onPress={handleSignIn}>
+                <BtnText> Fazer Login </BtnText>
+            </BtnCustomLogin>
           </InputArea>
   
-          <ContainerAlert>
+          {/* <ContainerAlert>
             <Alert>Algum alerta</Alert>
-          </ContainerAlert>
+          </ContainerAlert> */}
         </View>
   
         <View>
-          <BtnCustomRegister title="Registre-se agora" onPress={handleSignUp} />
+          <BtnZeroBg title="Registre-se agora" onPress={handleSignUp}>
+            <BtnText> Registre-se agora </BtnText>
+          </BtnZeroBg>
         </View>
       </Body>
     );

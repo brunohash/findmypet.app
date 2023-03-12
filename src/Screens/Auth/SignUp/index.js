@@ -3,11 +3,12 @@ import {
   Body,
   Input,
   ScrollView,
+  BtnText,
   BtnCustomRegister,
   SmallText,
   InputArea,
   ContainerAlert,
-  AlertSuccess,
+  AlertSuccess
 } from '../style';
 
 export function SignUp() {
@@ -16,38 +17,34 @@ export function SignUp() {
   const [email, setEmail] = useState('');
   const [confirmEmail, setConfirmEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [emailCorrect, setEmailCorrect] = useState(false);
+  const [emailMatched, setEmailMatched] = useState(false);
 
   function register() {
-    // Aqui você pode realizar o processamento dos dados coletados
-    alert(`Nome: ${name} \nData de aniversário: ${birthday} \nE-mail: ${email} \nSenha: ${password}`);
+    const userData = { name, birthday, email, password };
+    if (!emailMatched) {
+      alert('Os e-mails não coincidem!');
+      return;
+    }
+    fetch('https://myapi.com/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(userData)
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success:', data);
+        alert('Cadastro realizado com sucesso!');
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Erro ao realizar cadastro, tente novamente.');
+      });
   }
+
 
   function compareEmails() {
     const emailCorrect = email === confirmEmail;
-    if (emailCorrect) {
-      setEmailCorrect(true);
-    } else {
-      setEmailCorrect(false);
-    }
-  }
-
-  function handleEmailChange(text) {
-    setEmail(text);
-    if (confirmEmail !== '' && text === confirmEmail) {
-      setEmailCorrect(true);
-    } else {
-      setEmailCorrect(false);
-    }
-  }
-
-  function handleConfirmEmailChange(text) {
-    setConfirmEmail(text);
-    if (email !== '' && text === email) {
-      setEmailCorrect(true);
-    } else {
-      setEmailCorrect(false);
-    }
+    setEmailMatched(emailCorrect);
   }
 
   return (
@@ -55,36 +52,39 @@ export function SignUp() {
       <ScrollView>
         <InputArea>
           <SmallText>Nome</SmallText>
-          <Input placeholder="Insira seu nome" onChangeText={text => setName(text)} />
+          <Input placeholder="Insira seu nome" value={name} onChangeText={text => setName(text)} />
         </InputArea>
 
         <InputArea>
           <SmallText>Data de aniversário</SmallText>
-          <Input placeholder="Insira sua data de nascimento" onChangeText={text => setBirthday(text)} />
+          <Input placeholder="Insira sua data de nascimento" value={birthday} onChangeText={text => setBirthday(text)} keyboardType='numeric' />
         </InputArea>
 
         <InputArea>
           <SmallText>Insira seu e-mail</SmallText>
-          <Input placeholder="insira seu E-mail" onChangeText={handleEmailChange} />
+          <Input placeholder="insira seu E-mail" value={email} onChangeText={text => setEmail(text)} keyboardType='email-address' />
         </InputArea>
 
         <InputArea>
           <SmallText>Confirmar E-mail</SmallText>
-          <Input placeholder="confirme seu E-mail" onChangeText={handleConfirmEmailChange} />
+          <Input placeholder="confirme seu E-mail" value={confirmEmail} onChangeText={text => setConfirmEmail(text)} keyboardType='email-address' onBlur={compareEmails} />
         </InputArea>
 
         <InputArea>
           <SmallText>Senha</SmallText>
-          <Input placeholder="Crie uma senha" onChangeText={text => setPassword(text)} />
+          <Input placeholder="Crie uma senha" value={password} onChangeText={text => setPassword(text)} secureTextEntry />
         </InputArea>
 
-        <BtnCustomRegister title="Criar conta" onPress={register} />
+        <BtnCustomRegister onPress={register} disabled={!emailMatched}>
+          <BtnText>{emailMatched ? 'Criar uma conta' : 'Preencha os campos corretamente'}</BtnText>
+        </BtnCustomRegister>
 
-        {emailCorrect !== '' && (
+
+        {email && confirmEmail && emailMatched === false && (
           <InputArea>
             <ContainerAlert>
-              <AlertSuccess correct={emailCorrect}>
-                {emailCorrect ? 'E-mails conferem!' : 'Os e-mails não coincidem!'}
+              <AlertSuccess correct={emailMatched}>
+                {emailMatched ? 'E-mails conferem!' : 'Os e-mails não coincidem!'}
               </AlertSuccess>
             </ContainerAlert>
           </InputArea>
