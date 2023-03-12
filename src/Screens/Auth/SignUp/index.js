@@ -10,6 +10,7 @@ import {
   ContainerAlert,
   AlertSuccess
 } from '../style';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 export function SignUp() {
   const [name, setName] = useState('');
@@ -18,10 +19,13 @@ export function SignUp() {
   const [confirmEmail, setConfirmEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailMatched, setEmailMatched] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   function register() {
+    setLoading(true);
     const userData = { name, birthday, email, password };
     if (!emailMatched) {
+      setLoading(false);
       alert('Os e-mails não coincidem!');
       return;
     }
@@ -32,15 +36,16 @@ export function SignUp() {
     })
       .then(response => response.json())
       .then(data => {
+        setLoading(false);
         console.log('Success:', data);
         alert('Cadastro realizado com sucesso!');
       })
       .catch(error => {
+        setLoading(false);
         console.error('Error:', error);
         alert('Erro ao realizar cadastro, tente novamente.');
       });
   }
-
 
   function compareEmails() {
     const emailCorrect = email === confirmEmail;
@@ -79,6 +84,8 @@ export function SignUp() {
           <BtnText>{emailMatched ? 'Criar uma conta' : 'Preencha os campos corretamente'}</BtnText>
         </BtnCustomRegister>
 
+        {/* exibe o spinner enquanto a requisição está sendo enviada */}
+        <Spinner visible={loading} />
 
         {email && confirmEmail && emailMatched === false && (
           <InputArea>
