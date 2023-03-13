@@ -3,8 +3,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 const { Screen, Navigator } = createNativeStackNavigator();
 
-import { ScreenA } from '../Screens/ScreenA';
-import { ScreenB } from '../Screens/ScreenB';
+import { ScreenA } from '../../Screens/User/ScreenA';
+import { ScreenB } from '../../Screens/User/ScreenB';
 
 export function StackRoutes() 
 {

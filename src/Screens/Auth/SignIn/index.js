@@ -14,7 +14,6 @@ import { useNavigation } from "@react-navigation/native";
 import Spinner from 'react-native-loading-spinner-overlay';
 import axios from "axios";
 
-
 export function SignIn() {
     const navigation = useNavigation();
     const [email, setEmail] = useState("");
@@ -42,8 +41,8 @@ export function SignIn() {
                     pass: password
                     }).then((response) => {
                         setLoading(false);
-                        const data = response.data;
-                        console.log(data.token);
+                        const { token } = response.data;
+                        console.log(token);
                         alert("Login realizado com sucesso!");
                     }).catch((error) => {
                         setLoading(false);

@@ -4,8 +4,8 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 const { Screen, Navigator } = createBottomTabNavigator();
 
-import { ScreenA } from '../Screens/ScreenA';
-import { ScreenB } from '../Screens/ScreenB';
+import { ScreenA } from '../../Screens/User/ScreenA';
+import { ScreenB } from '../../Screens/User/ScreenB';
 
 export function TabRoutes() 
 {
