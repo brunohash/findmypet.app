@@ -1,3 +1,5 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import {
     Body,
     Input,
@@ -39,16 +41,16 @@ export function SignIn() {
                 api.post("authenticate", {
                     user: email,
                     pass: password
-                    }).then((response) => {
-                        setLoading(false);
-                        const { token } = response.data;
-                        console.log(token);
-                        alert("Login realizado com sucesso!");
-                    }).catch((error) => {
-                        setLoading(false);
-                        console.log(error);
-                        alert("Erro ao realizar login!");
-                    });
+                }).then((response) => {
+                    setLoading(false);
+                    const { token } = response.data;
+                    AsyncStorage.setItem('token', token);
+                    navigation.navigate("Tabs", { screen: "ScreenA" });
+                }).catch((error) => {
+                    setLoading(false);
+                    console.log(error);
+                    alert("Erro ao realizar login!");
+                });
             }
             else {
                 setLoading(false);
@@ -89,12 +91,7 @@ export function SignIn() {
                     </BtnCustomLogin>
                 </InputArea>
 
-                {/* exibe o spinner enquanto a requisição está sendo enviada */}
                 <Spinner visible={loading} />
-
-                {/* <ContainerAlert>
-            <Alert>Algum alerta</Alert>
-          </ContainerAlert> */}
             </View>
 
             <View>

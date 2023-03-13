@@ -1,23 +1,16 @@
-import React from 'react';
 import { View, Text, Button } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import useToken from '../../Functions/getTokenFromStorage';
+import verifyJwt from '../../Functions/verifyJwtToken';
 
 export function ScreenA() {
 
-  const navigation = useNavigation();
+  const token = useToken();
 
-  function openScreen() {
-   navigation.navigate('ScreenB');
-  }
-  
   return (
     <View style={{ flex: 1, backgroundColor: 'red', justifyContent: 'center' }}>
-        <Text> Screen A </Text>
+      <Text> Screen A </Text>
 
-        <Button 
-        title="ir para a screen B"
-        onPress={ openScreen }
-        />
+      <Text>{token}</Text>
     </View>
   );
 }

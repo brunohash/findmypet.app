@@ -1,10 +1,20 @@
-import React from 'react';
 import { View, Text } from 'react-native';
+import useTokenValidation from '../../Functions/verifyJwtToken';
 
 export function ScreenB() {
+  const isValid = useTokenValidation();
+
+  if (!isValid) {
+    return (
+      <View>
+        <Text>Acesso negado. Por favor, faça login.</Text>
+      </View>
+    );
+  }
+
   return (
-    <View style={{ flex: 1, backgroundColor: 'blue'}}>
-        <Text> Screen B </Text>
+    <View>
+      <Text>Olá, usuário autenticado.</Text>
     </View>
   );
 }
