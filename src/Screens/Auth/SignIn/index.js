@@ -12,12 +12,18 @@ import {
 import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import Spinner from 'react-native-loading-spinner-overlay';
+import axios from "axios";
+
 
 export function SignIn() {
     const navigation = useNavigation();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
+    const api = axios.create({
+        baseURL: "http://192.168.1.103:7209/v1/",
+        headers: { "Content-Type": "application/json" },
+    });
 
     function handleEmailChange(text) {
         setEmail(text);
@@ -28,23 +34,22 @@ export function SignIn() {
     }
 
     async function handleSignIn() {
-       setLoading(true);
+        setLoading(true);
         try {
             if (email != "" || password != "") {
-                const response = await fetch("https://localhost:7209/v1/authenticate", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        user: email,
-                        pass: password
-                    })
-                });
-                setLoading(false);
-                console.log(data);
-                const data = await response.json();
-                alert("Login realizado com sucesso!", data);
+                api.post("authenticate", {
+                    user: email,
+                    pass: password
+                    }).then((response) => {
+                        setLoading(false);
+                        const data = response.data;
+                        console.log(data.token);
+                        alert("Login realizado com sucesso!");
+                    }).catch((error) => {
+                        setLoading(false);
+                        console.log(error);
+                        alert("Erro ao realizar login!");
+                    });
             }
             else {
                 setLoading(false);
