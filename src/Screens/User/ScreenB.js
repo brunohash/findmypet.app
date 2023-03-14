@@ -8,6 +8,7 @@ export function ScreenB() {
     return (
       <View>
         <Text>Acesso negado. Por favor, faça login.</Text>
+        
       </View>
     );
   }

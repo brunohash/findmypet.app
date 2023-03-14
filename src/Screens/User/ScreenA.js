@@ -1,16 +1,22 @@
 import { View, Text, Button } from 'react-native';
 import useToken from '../../Functions/getTokenFromStorage';
-import verifyJwt from '../../Functions/verifyJwtToken';
+import useTokenValidation from '../../Functions/verifyJwtToken';
 
 export function ScreenA() {
 
-  const token = useToken();
+  const isValid = useTokenValidation();
+
+  if (!isValid) {
+    return (
+      <View>
+        <Text>Acesso negado. Por favor, faça login.</Text>
+      </View>
+    );
+  }
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'red', justifyContent: 'center' }}>
-      <Text> Screen A </Text>
-
-      <Text>{token}</Text>
+    <View>
+      <Text>Olá, usuário autenticado.</Text>
     </View>
   );
 }

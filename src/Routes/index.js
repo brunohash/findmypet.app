@@ -84,7 +84,10 @@ function TabRoutes() {
 function MainNavigator() {
     return (
       <Navigator>
-        <Screen name="Stack" component={StackRoutes} />
+        <Screen name="Stack" component={StackRoutes}
+        options={{
+            headerShown: false,
+        }} />
         <Screen name="Tabs" 
         options={{
             headerShown: false,

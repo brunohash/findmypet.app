@@ -21,11 +21,6 @@ export function SignIn() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
-    const api = axios.create({
-        baseURL: "http://192.168.1.103:7209/v1/",
-        headers: { "Content-Type": "application/json" },
-    });
-
     function handleEmailChange(text) {
         setEmail(text);
     }
@@ -34,11 +29,16 @@ export function SignIn() {
         setPassword(text);
     }
 
+
+    /* const api = axios.create({
+        baseURL: ""
+    });
+ */
     async function handleSignIn() {
         setLoading(true);
         try {
             if (email != "" || password != "") {
-                api.post("authenticate", {
+                axios.post("http://192.168.1.107:7209/v1/authenticate", {
                     user: email,
                     pass: password
                 }).then((response) => {

@@ -9,7 +9,6 @@ function isTokenExpired(token) {
   }
   return decoded.exp < Date.now() / 1000;
 }
-
 export default function useTokenValidation() {
   const [isValid, setIsValid] = useState(false);
 
