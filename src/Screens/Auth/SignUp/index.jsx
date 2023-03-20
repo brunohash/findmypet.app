@@ -1,16 +1,10 @@
 import React, { useState } from 'react';
-import {
-  Body,
-  Input,
-  ScrollView,
-  BtnText,
-  BtnCustomRegister,
-  SmallText,
-  InputArea,
-  ContainerAlert,
-  AlertSuccess
-} from '../style';
 import Spinner from 'react-native-loading-spinner-overlay';
+import useTokenValidation from '../../../Functions/verifyJwtToken';
+import api from '../../../Shared/api';
+import {
+  AlertSuccess, Body, BtnCustomRegister, BtnText, ContainerAlert, Input, InputArea, ScrollView, SmallText
+} from '../style';
 
 export function SignUp() {
   const [name, setName] = useState('');
@@ -20,10 +14,23 @@ export function SignUp() {
   const [password, setPassword] = useState('');
   const [emailMatched, setEmailMatched] = useState(false);
   const [loading, setLoading] = useState(false);
+  const isValid = useTokenValidation();
+
+  useEffect(() => {
+    if (isValid) {
+      navigation.navigate("Tabs", { screen: "ScreenA" });
+    }
+  }, []);
 
   function register() {
     setLoading(true);
     const userData = { name, birthday, email, password };
+
+    if (!name || !birthday || !email || !password) {
+      setLoading(false);
+      alert('Preencha todos os campos!');
+      return;
+    }
 
     if (!emailMatched) {
       setLoading(false);
@@ -31,29 +38,19 @@ export function SignUp() {
       return;
     }
 
-    if (!name || !birthday || !email || !password) {
-      setLoading(false);
-      alert('Preencha todos os campos!');
-      return;
-    } else {
-      fetch('https://myapi.com/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(userData)
+    api.post("register", userData)
+      .then(response => {
+        setLoading(false);
+        console.log('Success:', response.data);
+        alert('Cadastro realizado com sucesso!');
       })
-        .then(response => response.json())
-        .then(data => {
-          setLoading(false);
-          console.log('Success:', data);
-          alert('Cadastro realizado com sucesso!');
-        })
-        .catch(error => {
-          setLoading(false);
-          console.error('Error:', error);
-          alert('Erro ao realizar cadastro, tente novamente.');
-        });
-    }
+      .catch(error => {
+        setLoading(false);
+        console.error('Error:', error);
+        alert('Erro ao realizar cadastro, tente novamente.');
+      });
   }
+
 
   function compareEmails() {
     const emailCorrect = email === confirmEmail;

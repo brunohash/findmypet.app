@@ -14,53 +14,49 @@ import {
 import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import Spinner from 'react-native-loading-spinner-overlay';
-import axios from "axios";
+import useTokenValidation from '../../../Functions/verifyJwtToken';
 
 export function SignIn() {
     const navigation = useNavigation();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
+    const isValid = useTokenValidation();
+
     function handleEmailChange(text) {
         setEmail(text);
     }
-
     function handlePasswordChange(text) {
         setPassword(text);
     }
 
+    useEffect(() => {
+        if (isValid) {
+            navigation.navigate("Tabs", { screen: "ScreenA" });
+        }
+    }, []);
 
-    /* const api = axios.create({
-        baseURL: ""
-    });
- */
     async function handleSignIn() {
+        if (!email || !password) {
+            alert("Digite um login e senha!");
+            return;
+        }
         setLoading(true);
-        try {
-            if (email != "" || password != "") {
-                axios.post("http://192.168.1.107:7209/v1/authenticate", {
-                    user: email,
-                    pass: password
-                }).then((response) => {
-                    setLoading(false);
-                    const { token } = response.data;
-                    AsyncStorage.setItem('token', token);
-                    navigation.navigate("Tabs", { screen: "ScreenA" });
-                }).catch((error) => {
-                    setLoading(false);
-                    console.log(error);
-                    alert("Erro ao realizar login!");
-                });
-            }
-            else {
-                setLoading(false);
-                alert("Digite um login e senha!");
-            }
-        } catch (error) {
+        api.post("authenticate", {
+            user: email,
+            pass: password
+        }).then((response) => {
+            setLoading(false);
+            const { token } = response.data;
+            AsyncStorage.setItem('token', token);
+            navigation.navigate("Tabs", { screen: "ScreenA" });
+        }).catch((error) => {
             setLoading(false);
             console.log(error);
             alert("Usuário e/ou senha incorretos!");
-        }
+        });
+        setLoading(false);
+        alert("Digite um login e senha!");
     }
 
     function handleSignUp() {

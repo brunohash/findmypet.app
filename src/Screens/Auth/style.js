@@ -38,6 +38,7 @@ export const BtnCustomLogin = styled.TouchableOpacity`
 
 export const BtnText = styled.Text`
     font-weight: bold;
+    text-align: center;
 `;
 
 export const BtnCustomRegister = styled.TouchableOpacity`
@@ -68,7 +69,10 @@ export const Text = styled.Text`
   color: ${colors.text};
 `;
 
-export const BtnZeroBg = styled.TouchableOpacity``;
+export const BtnZeroBg = styled(BtnCustomLogin)`
+  background-color: transparent;
+  width: 300px;
+`;
 
 export const SmallText = styled.Text`
   font-size: 14px;

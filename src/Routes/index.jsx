@@ -43,16 +43,17 @@ function TabRoutes() {
         <NavigatorTab
             screenOptions={{
                 headerShown: false,
-                tabBarActiveTintColor: 'red',
+                tabBarActiveTintColor: '#9E8577',
                 tabBarInactiveTintColor: 'gray',
                 tabBarLabelPosition: 'beside-icon',
                 tabBarStyle: {
                     paddingVertical: 20,
-                    height: 70,
+                    paddingTop: 0,
+                    height: 50,
                 }
             }}>
             <ScreenTab
-                name="ScreenA"
+                name="Feed"
                 options={{
                     tabBarIcon: ({ size, color }) => (
                         <MaterialIcons
@@ -66,7 +67,7 @@ function TabRoutes() {
             />
 
             <ScreenTab
-                name="ScreenB"
+                name="Publicar"
                 options={{
                     tabBarIcon: ({ size, color }) => (
                         <MaterialIcons
